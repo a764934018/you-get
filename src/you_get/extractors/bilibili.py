@@ -318,6 +318,10 @@ class Bilibili(VideoExtractor):
             api_url = self.bilibili_bangumi_api(avid, cid, ep_id)
             api_content = get_content(api_url, headers=self.bilibili_headers(referer=self.url))
             api_playinfo = json.loads(api_content)
+            if 'caption_only' in kwargs and kwargs['caption_only']:
+                # get danmaku
+                self.danmaku = get_content('http://comment.bilibili.com/%s.xml' % cid)
+                return
             if api_playinfo['code'] == 0:  # success
                 playinfos.append(api_playinfo)
             else:

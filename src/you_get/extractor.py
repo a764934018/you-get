@@ -194,6 +194,11 @@ class VideoExtractor():
                 else:
                     stream_id = self.streams_sorted[0]['id'] if 'id' in self.streams_sorted[0] else self.streams_sorted[0]['itag']
                     self.p_i(stream_id)
+        elif 'caption_only' in kwargs and kwargs['caption_only']:
+            filename = '{}.cmt.xml'.format(get_filename(self.title))
+            print('Downloading {} ...\n'.format(filename))
+            with open(os.path.join(kwargs['output_dir'], filename), 'w', encoding='utf8') as fp:
+                fp.write(self.danmaku)
 
         else:
             if 'stream_id' in kwargs and kwargs['stream_id']:

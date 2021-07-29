@@ -1517,6 +1517,10 @@ def script_main(download, download_playlist, **kwargs):
         '--json', action='store_true',
         help='Print extracted URLs in JSON format'
     )
+    dry_run_grp.add_argument(
+        '--caption-only', action='store_true',
+        help='Only download caption'
+    )
 
     download_grp = parser.add_argument_group('Download options')
     download_grp.add_argument(
@@ -1648,6 +1652,7 @@ def script_main(download, download_playlist, **kwargs):
     extractor_proxy = args.extractor_proxy
 
     info_only = args.info
+    caption_only = args.caption_only
     if args.force:
         force = True
     if args.skip_existing_file_size_check:
@@ -1661,6 +1666,8 @@ def script_main(download, download_playlist, **kwargs):
         # to fix extractors not use VideoExtractor
         dry_run = True
         info_only = False
+        if args.caption_only:
+            dry_run = False
 
     if args.cookies:
         load_cookies(args.cookies)
@@ -1714,7 +1721,7 @@ def script_main(download, download_playlist, **kwargs):
             download, download_playlist,
             URLs, args.playlist,
             output_dir=args.output_dir, merge=not args.no_merge,
-            info_only=info_only, json_output=json_output, caption=caption,
+            info_only=info_only, json_output=json_output, caption=caption, caption_only=caption_only,
             password=args.password,
             **extra
         )
